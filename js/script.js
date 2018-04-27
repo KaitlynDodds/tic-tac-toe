@@ -12,7 +12,7 @@ const game = (function($) {
 	*************************/
 
 	// handle user box selection 
-	$('body').on('click', '.boxes', handleBoxClick);
+	$('body').on('click', '.boxes li', handleBoxClick);
 
 	// handle start btn 
 	$('body').on('click', '#start a', handleNewGame);
@@ -25,35 +25,28 @@ const game = (function($) {
 		mouseleave: handlePlayerHoverOut
 	}, '.boxes li');
 
-	// $('body').on('hover', '.boxes', handlePlayerHoverIn, handlePlayerHoverOut);
-
-
-	/* Helper Functions
+	/* Handler Functions
 	*************************/
 
 	function handleBoxClick(e) {
-		// check that a box was clicked
-		if (e.target.className === 'box') {
-			
-			const boxes = $('.boxes li');
-			for (let i = 0; i < boxes.length; i++) {
-				// identify which box was clicked
-				if (boxes[i] === e.target) {
-					// record move in game state
-					if (i < 3) {
-						game.move(i);
-					} else if (i < 6) {
-						game.move(i);
-					} else {
-						game.move(i);
-					}
-					break;
-				}
+
+		const index = getIndexOfBox(e.target);
+
+		// make sure box is not full
+		if (game.isEmptyBox(index)) {
+			// add class to box 
+			if (game.currentPlayer.val === 'O') {
+				$(e.target).addClass('box-filled-1');
+			} else {
+				$(e.target).addClass('box-filled-2');
 			}
 
-			// print board
-			game.printBoard();
+			// record move in game state
+			game.move(index);		
 		}
+
+		// print board
+		game.printBoard();
 	}
 
 	function handleNewGame() {
@@ -63,17 +56,37 @@ const game = (function($) {
 
 	// player mouses onto box
 	function handlePlayerHoverIn(e) {
-		if (game.currentPlayer.val === 'O') {
-			$(e.target).css('backgroundImage', 'url(img/o.svg)');	
-		} else {
-			$(e.target).css('backgroundImage', 'url(img/x.svg)');
+		const box = e.target;
+		// check if box is empty 
+		if (game.isEmptyBox(getIndexOfBox(box))) {
+			if (game.currentPlayer.val === 'O') {
+				$(box).css('backgroundImage', 'url(img/o.svg)');	
+			} else {
+				$(box).css('backgroundImage', 'url(img/x.svg)');
+			}
 		}
 	}
 
 	// player mouse leaves box
 	function handlePlayerHoverOut(e) {
 		// set background of box 
-		$(e.target).css('backgroundImage', 'none');
+		if (game.isEmptyBox(getIndexOfBox(e.target))) {
+			$(e.target).css('backgroundImage', 'none');
+		}
+	}
+
+	function getIndexOfBox(box) {
+		// check element is box
+		if (!$(box).hasClass('box')) return -1;
+
+		// find index 
+		const boxes = $('.boxes li');
+		for (let i = 0; i < boxes.length; i++) {
+			// identify which box was clicked
+			if (boxes[i] === box) return i;
+		}
+
+		return -1;
 	}
 
 	return game;

@@ -57,7 +57,7 @@ Game.prototype.next = function() {
 Game.prototype.move = function(move) {
 	if (this.isPlaying) {
 		// check that move is valid 
-		if (!this.board[move]) {
+		if (this.isEmptyBox(move)) {
 			// add move to board 
 			this.board[move] = this.currentPlayer.val;
 			// check for winner
@@ -75,6 +75,10 @@ Game.prototype.move = function(move) {
 
 /* Helper Functions
 *************************/
+
+Game.prototype.isEmptyBox = function(index) {
+	return this.board[index] === undefined;
+}
 
 Game.prototype.checkIsWinner = function() {
 	// check board for winner
