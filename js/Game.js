@@ -6,12 +6,12 @@ function Game(player1, player2) {
 		this.player1 = player2;
 		this.player2 = player1;
 	}
-	this.currentPlayer = player1;  // default starting player
+	this.currentPlayer = player1;  	// default starting player
 	this.offPlayer = player2;
 
-	this.board = Array(9);  // default starting board
-	this.isPlaying = false;  // need to start game	
-	this.isTie = false;
+	this.board = Array(9);  		// default starting board
+	this.isPlaying = false;  		// need to start game	
+	this.isTie = false;				// no tie to start
 }
 
 
@@ -26,6 +26,9 @@ Game.prototype.start = function() {
 	
 	// clear board data 
 	this.board = Array(9);
+
+	// reset tie val
+	this.isTie = false;
 
 	// display board 
 	this.displayBoard();

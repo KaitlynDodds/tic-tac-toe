@@ -14,6 +14,11 @@ const game = (function($) {
 	// handle user box selection 
 	$('body').on('click', '.boxes', handleBoxClick);
 
+	// handle start btn 
+	$('body').on('click', '#start a', handleNewGame);
+	
+	// handle new game btn
+	$('body').on('click', '#finish a', handleNewGame);
 
 	/* Helper Functions
 	*************************/
@@ -41,6 +46,12 @@ const game = (function($) {
 			// print board
 			game.printBoard();
 		}
+	}
+
+
+	function handleNewGame() {
+		// start new game
+		game.start();
 	}
 
 	return game;
