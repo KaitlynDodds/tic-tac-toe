@@ -14,6 +14,10 @@ function Game(player1, player2) {
 	this.isTie = false;
 }
 
+
+/* Game Actions
+*************************/
+
 Game.prototype.load = function() {
 	this.displayStart();
 }
@@ -61,6 +65,10 @@ Game.prototype.move = function(move) {
 	}
 }
 
+
+/* Helper Functions
+*************************/
+
 Game.prototype.checkIsWinner = function() {
 	// check board for winner
 	const winningScenarios = [
@@ -95,6 +103,10 @@ Game.prototype.checkIsTie = function() {
 	this.isTie = true;
 	return true;
 }
+
+
+/* Display UI Functions
+*************************/
 
 Game.prototype.printBoard = function() {
 	let print = "";

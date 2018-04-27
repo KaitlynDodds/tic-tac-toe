@@ -1,12 +1,24 @@
 const game = (function($) {
 
+	/* Game Setup
+	*************************/
+
 	const game = new Game(new Player('X'), new Player('O'));
 
 	game.load();
 
-	// handle user box selection 
-	$('body').on('click', '.boxes', (e) => {
 
+	/* Event Handlers
+	*************************/
+
+	// handle user box selection 
+	$('body').on('click', '.boxes', handleBoxClick);
+
+
+	/* Helper Functions
+	*************************/
+
+	function handleBoxClick(e) {
 		// check that a box was clicked
 		if (e.target.className === 'box') {
 			
@@ -29,7 +41,7 @@ const game = (function($) {
 			// print board
 			game.printBoard();
 		}
-	});
+	}
 
 	return game;
 
