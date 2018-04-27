@@ -26,11 +26,9 @@ Game.prototype.start = function() {
 	this.isPlaying = true;
 }
 
-Game.prototype.stop = function(tie = false) {
+Game.prototype.stop = function() {
 	// stop game 
-	this.isPlaying = false;
-	// if game ended in tie, change obj prop
-	this.isTie = tie;		
+	this.isPlaying = false;	
 	// display final screen 
 	this.displayWin();
 }
@@ -48,7 +46,8 @@ Game.prototype.move = function(move) {
 			// add move to board 
 			this.board[move] = this.currentPlayer.val;
 			// check for winner
-			if (this.isWinner()) {
+			if (this.checkIsWinner() || this.checkIsTie()) {
+				// game over 
 				this.stop();
 			} else {
 				// update currentPlayer 
@@ -58,7 +57,7 @@ Game.prototype.move = function(move) {
 	}
 }
 
-Game.prototype.isWinner = function() {
+Game.prototype.checkIsWinner = function() {
 	// check board for winner
 	const winningScenarios = [
 		[0, 1, 2],
@@ -81,6 +80,16 @@ Game.prototype.isWinner = function() {
 	}
 	// no winner yet 
 	return false;
+}
+
+Game.prototype.checkIsTie = function() {
+	// check if board is full
+	for (let i = 0; i < this.board.length; i++) {
+		if (!this.board[i]) return false;
+	}
+	// game is over, tie
+	this.isTie = true;
+	return true;
 }
 
 Game.prototype.printBoard = function() {
