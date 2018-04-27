@@ -3,7 +3,7 @@ const game = (function($) {
 	const playerX = new Player('X');
 	const playerO = new Player('O');
 	
-	const game = new Game(playerX, playerO);
+	const game = new Game(playerO, playerX);
 
 	game.start();
 
@@ -28,7 +28,7 @@ const game = (function($) {
 					break;
 				}
 			}
-			
+
 			// print board
 			game.printBoard();
 		}
