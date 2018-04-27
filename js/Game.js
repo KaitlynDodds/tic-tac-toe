@@ -7,9 +7,11 @@ function Game(player1, player2) {
 		this.player2 = player1;
 	}
 	this.currentPlayer = player1;  // default starting player
+	this.offPlayer = player2;
 
 	this.board = Array(9);  // default starting board
 	this.isPlaying = false;  // need to start game	
+	this.isTie = false;
 }
 
 Game.prototype.start = function() {
@@ -24,9 +26,13 @@ Game.prototype.start = function() {
 	this.isPlaying = true;
 }
 
-Game.prototype.stop = function() {
-	console.log('The winner is: ', this.currentPlayer.val);
+Game.prototype.stop = function(tie = false) {
+	// stop game 
 	this.isPlaying = false;
+	// if game ended in tie, change obj prop
+	this.isTie = tie;		
+	// display final screen 
+	this.displayWin();
 }
 
 Game.prototype.next = function() {
@@ -121,4 +127,46 @@ Game.prototype.displayBoard = function() {
 	$('body div:first-child').replaceWith(boardHTML);
 
 }
+
+Game.prototype.displayWin = function() {
+
+	const winnerHTML = 
+	`<div class="screen screen-win ${(this.isTie ? 'screen-win-tie' : (this.currentPlayer === this.player1 ? 'screen-win-one' : 'screen-win-two'))}" id="finish">
+	  <header>
+	    <h1>Tic Tac Toe</h1>
+	    <p class="message">${(this.isTie ? 'It\'s a Tie!' : 'Winner')}</p>
+	    <a href="#" class="button">New game</a>
+	  </header>
+	</div>`;
+
+	// override html in body, append to body 
+	$('body div:first-child').replaceWith(winnerHTML);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
