@@ -20,7 +20,12 @@ const game = (function($) {
 	// handle new game btn
 	$('body').on('click', '#finish a', handleNewGame);
 
-	
+	$('body').on({
+		mouseenter: handlePlayerHoverIn,
+		mouseleave: handlePlayerHoverOut
+	}, '.boxes li');
+
+	// $('body').on('hover', '.boxes', handlePlayerHoverIn, handlePlayerHoverOut);
 
 
 	/* Helper Functions
@@ -51,12 +56,53 @@ const game = (function($) {
 		}
 	}
 
-
 	function handleNewGame() {
 		// start new game
 		game.start();
 	}
 
+	// player mouses onto box
+	function handlePlayerHoverIn(e) {
+		if (game.currentPlayer.val === 'O') {
+			$(e.target).css('backgroundImage', 'url(img/o.svg)');	
+		} else {
+			$(e.target).css('backgroundImage', 'url(img/x.svg)');
+		}
+	}
+
+	// player mouse leaves box
+	function handlePlayerHoverOut(e) {
+		// set background of box 
+		$(e.target).css('backgroundImage', 'none');
+	}
+
 	return game;
 
 }(jQuery));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
