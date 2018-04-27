@@ -1,14 +1,11 @@
 const game = (function($) {
 
-	const playerX = new Player('X');
-	const playerO = new Player('O');
-	
-	const game = new Game(playerO, playerX);
+	const game = new Game(new Player('X'), new Player('O'));
 
-	game.start();
+	game.load();
 
 	// handle user box selection 
-	$('.boxes').on('click', (e) => {
+	$('body').on('click', '.boxes', (e) => {
 
 		// check that a box was clicked
 		if (e.target.className === 'box') {

@@ -14,6 +14,10 @@ function Game(player1, player2) {
 	this.isTie = false;
 }
 
+Game.prototype.load = function() {
+	this.displayStart();
+}
+
 Game.prototype.start = function() {
 	
 	// clear board data 
@@ -103,6 +107,23 @@ Game.prototype.printBoard = function() {
 	console.log(print);	
 }
 
+Game.prototype.overrideBody = function(html) {
+	// override html in body, append to body 
+	$('body div:first-child').replaceWith(html);
+}
+
+Game.prototype.displayStart = function() {
+	const startHTML = 
+	`<div class="screen screen-start" id="start">
+	  <header>
+	    <h1>Tic Tac Toe</h1>
+	    <a href="#" class="button">Start game</a>
+	  </header>
+	</div>`;
+
+	this.overrideBody(startHTML);
+}
+
 Game.prototype.displayBoard = function() {
 
 	// insert board html into page 
@@ -132,9 +153,7 @@ Game.prototype.displayBoard = function() {
 	  </ul>
 	</div>`;
 
-	// override html in body, append to body 
-	$('body div:first-child').replaceWith(boardHTML);
-
+	this.overrideBody(boardHTML);
 }
 
 Game.prototype.displayWin = function() {
@@ -148,9 +167,7 @@ Game.prototype.displayWin = function() {
 	  </header>
 	</div>`;
 
-	// override html in body, append to body 
-	$('body div:first-child').replaceWith(winnerHTML);
-
+	this.overrideBody(winnerHTML);
 }
 
 
