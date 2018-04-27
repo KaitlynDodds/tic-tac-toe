@@ -16,9 +16,12 @@ const game = (function($) {
 
 	// handle start btn 
 	$('body').on('click', '#start a', handleNewGame);
-	
+
 	// handle new game btn
 	$('body').on('click', '#finish a', handleNewGame);
+
+	
+
 
 	/* Helper Functions
 	*************************/
