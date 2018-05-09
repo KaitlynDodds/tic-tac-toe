@@ -3,7 +3,7 @@ const game = (function($) {
 	/* Game Setup
 	*************************/
 
-	const game = new Game(new Player('X'), new Player('O'));
+	const game = new Game();
 
 	game.load();
 
@@ -15,7 +15,7 @@ const game = (function($) {
 	$('body').on('click', '.boxes li', handleBoxClick);
 
 	// handle start btn 
-	$('body').on('click', '#start a', handleNewGame);
+	$('body').on('click', '#start a', handleStartGame);
 
 	// handle new game btn
 	$('body').on('click', '#finish a', handleNewGame);
@@ -51,9 +51,18 @@ const game = (function($) {
 		game.printBoard();
 	}
 
-	function handleNewGame() {
+	function handleStartGame() {
+		// get player names 
+		const player1Name = (document.getElementById('player1NameInput').value !== "" ? document.getElementById('player1NameInput').value : "Player 1");
+		const player2Name = (document.getElementById('player2NameInput').value !== "" ? document.getElementById('player2NameInput').value : "Player 2");
+
 		// start new game
-		game.start();
+		game.start(new Player('O', player1Name), new Player('X', player2Name));
+	}
+
+	function handleNewGame() {
+		// display start screen 
+		game.load();
 	}
 
 	// player mouses onto box

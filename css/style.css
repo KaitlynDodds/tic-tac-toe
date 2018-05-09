@@ -94,22 +94,39 @@ h1 {
   width: 35%;
   padding: 1.25em 0 1em;
   outline: 1px solid #ccc;
-  transition: 1s; }
-  .players svg g {
-    fill: rgba(0, 0, 0, 0.25); }
-  .players:first-child {
-    left: 2.5%; }
-  .players:last-child {
-    right: 2.5%; }
-  .players-turn {
-    outline: none;
-  }
-  #player1.active svg g, #player2.active svg g {
-    fill: #fff; }
-  #player1.active {
-    background: #FFA000; }
-  #player2.active {
-    background: #3688C3; }
+  transition: 1s; 
+}
+
+.players p {
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+.players svg g {
+  fill: rgba(0, 0, 0, 0.25); 
+}
+.players:first-child {
+  left: 2.5%; 
+}
+.players:last-child {
+  right: 2.5%; 
+}
+.players-turn {
+  outline: none;
+}
+#player1.active svg g, 
+#player2.active svg g {
+  fill: #fff; 
+}
+#player1.active,
+#player1 p {
+  color: #fff;
+  background: #FFA000; 
+}
+#player2.active,
+#player2 p {
+  color: #fff;
+  background: #3688C3; 
+}
 
 .boxes {
   width: 480px;
@@ -164,6 +181,11 @@ h1 {
   color: #fff;
   display: block;
   margin: 15px auto;
+}
+
+.start-players div input::placeholder {
+  color: #fff;
+  opacity: .5;
 }
 
 #togglePlayer2Btn {
