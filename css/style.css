@@ -138,4 +138,71 @@ h1 {
       background-color: #3688C3;
       background-image: url(../img/x.svg); }
 
+.start-players {
+  width: 50%;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+.start-players div {
+  padding: 10px 0;
+}
+
+.start-players div label {
+  font-size: 1.5em;
+  font-weight: bold;
+  display: block;
+}
+
+.start-players div input {
+  outline: none;
+  width: 100%;
+  font-size: 1.3em;
+  border: none;
+  background: none;
+  text-align: center;
+  color: #fff;
+  display: block;
+  margin: 15px auto;
+}
+
+#togglePlayer2Btn {
+  background-color: #2081C3;
+  border: 3px solid #1A6EA5;
+  padding: 20px 15px;
+  color: #fff;
+  transition: 1s;
+  outline: none;
+}
+
+#togglePlayer2Btn:hover {
+  background: #1A6EA5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

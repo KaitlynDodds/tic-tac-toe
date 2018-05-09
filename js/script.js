@@ -25,6 +25,8 @@ const game = (function($) {
 		mouseleave: handlePlayerHoverOut
 	}, '.boxes li');
 
+	$('body').on('click', '#togglePlayer2Btn', handleTogglePlayer2Btn);
+
 	/* Handler Functions
 	*************************/
 
@@ -87,6 +89,24 @@ const game = (function($) {
 		}
 
 		return -1;
+	}
+
+	function handleTogglePlayer2Btn(e) {
+		// toggle visiblity of player 2 name input 
+		// change btn text 
+		const btn = e.target;
+		const input = btn.previousElementSibling;
+		// if already set to play against computer
+		if (input.disabled) {
+			btn.textContent = "Play Against the Computer";
+			input.value = "";
+			input.placeholder = "Name...";
+			input.disabled = false;
+		} else {
+			btn.textContent = "Play Against a Friend";
+			input.value = "Computer";
+			input.disabled = true;
+		}
 	}
 
 	return game;

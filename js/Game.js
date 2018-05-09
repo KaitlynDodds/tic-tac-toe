@@ -156,7 +156,20 @@ Game.prototype.displayStart = function() {
 	`<div class="screen screen-start" id="start">
 	  <header>
 	    <h1>Tic Tac Toe</h1>
+	    <div class="start-players">
+	    	<div>
+		    	<label>Player 1:</label>
+		    	<input type="text" id="player2-input" placeholder="Name..." />
+	    	</div>
+	    	<div>
+	    		<label>Player 2:</label>
+	    		<input type="text" id="player2-input" placeholder="Name..."/>
+	    		<button class="button" id="togglePlayer2Btn">Play Against the Computer</button>
+	    	</div>
+	    </div>
+
 	    <a href="#" class="button">Start game</a>
+	    
 	  </header>
 	</div>`;
 
