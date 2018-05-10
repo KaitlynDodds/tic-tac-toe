@@ -35,20 +35,23 @@ const game = (function($) {
 		const index = getIndexOfBox(e.target);
 
 		// make sure box is not full
-		if (game.isEmptyBox(index)) {
+		if (game.board.isEmptySpace(index)) {
+
+			// record move in game state
+			game.makeMove(index);	
+
 			// add class to box 
 			if (game.currentPlayer.val === 'O') {
 				$(e.target).addClass('box-filled-1');
 			} else {
 				$(e.target).addClass('box-filled-2');
-			}
+			}	
 
-			// record move in game state
-			game.move(index);		
+			game.next();
 		}
 
 		// print board
-		game.printBoard();
+		game.board.printBoard();
 	}
 
 	function handleStartGame() {
@@ -69,7 +72,7 @@ const game = (function($) {
 	function handlePlayerHoverIn(e) {
 		const box = e.target;
 		// check if box is empty 
-		if (game.isEmptyBox(getIndexOfBox(box))) {
+		if (game.board.isEmptySpace(getIndexOfBox(box))) {
 			if (game.currentPlayer.val === 'O') {
 				$(box).css('backgroundImage', 'url(img/o.svg)');	
 			} else {
@@ -81,7 +84,7 @@ const game = (function($) {
 	// player mouse leaves box
 	function handlePlayerHoverOut(e) {
 		// set background of box 
-		if (game.isEmptyBox(getIndexOfBox(e.target))) {
+		if (game.board.isEmptySpace(getIndexOfBox(e.target))) {
 			$(e.target).css('backgroundImage', 'none');
 		}
 	}
