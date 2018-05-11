@@ -1,6 +1,18 @@
 
 function Game() { 
 	this.winner = null;
+
+	// all possible winning scenarios 
+	this.winningScenarios = [
+		[0, 1, 2],
+		[3, 4, 5],
+		[6, 7, 8],
+		[0, 4, 8],
+		[2, 4, 6],
+		[0, 3, 6],
+		[1, 4, 7],
+		[2, 5, 8]
+	];
 }
 
 /* Game Actions
@@ -77,20 +89,10 @@ Game.prototype.isEmptySpace = function(space) {
 
 Game.prototype.checkForWinner = function() {
 	const board = this.getGameBoard();
-	// all possible winning scenarios 
-	const winningScenarios = [
-		[0, 1, 2],
-		[3, 4, 5],
-		[6, 7, 8],
-		[0, 4, 8],
-		[2, 4, 6],
-		[0, 3, 6],
-		[1, 4, 7],
-		[2, 5, 8]
-	];
-	for (let i = 0; i < winningScenarios.length; i++) {
+	
+	for (let i = 0; i < this.winningScenarios.length; i++) {
 		// get winning scenario to compare to 
-		const ws = winningScenarios[i];
+		const ws = this.winningScenarios[i];
 
 		if (board[ws[0]] !== undefined &&
 			board[ws[0]] === board[ws[1]] &&
