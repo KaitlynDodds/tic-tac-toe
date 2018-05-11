@@ -4,8 +4,10 @@ const game = (function($) {
 	*************************/
 
 	const game = new Game();
+	const gameDisplay = new GameDisplay(game);
 
-	game.load();
+	// load screen 
+	gameDisplay.showStart();
 
 
 	/* Event Handlers
@@ -34,21 +36,27 @@ const game = (function($) {
 
 		const index = getIndexOfBox(e.target);
 
-		// make sure box is not full
-		if (game.isEmptyBox(index)) {
-			// add class to box 
-			if (game.currentPlayer.val === 'O') {
-				$(e.target).addClass('box-filled-1');
-			} else {
-				$(e.target).addClass('box-filled-2');
-			}
+		// make sure space has not already been selected 
+		if (game.isValidSpace(index)) {
 
-			// record move in game state
-			game.move(index);		
+			// apply styling to UI 
+			gameDisplay.styleBox(e.target, game.currentPlayer.val);
+
+			// apply move to game state 
+			game.makeMove(index);
+
+			if (game.isOver()) {
+				// display winner
+				gameDisplay.showWinOrDraw();
+			} else {
+				// show next player 
+				gameDisplay.updateActivePlayerUI();
+			}
+	
 		}
 
-		// print board
-		game.printBoard();
+		// TODO: kzd -> remove when done 
+		gameDisplay.printBoard();
 	}
 
 	function handleStartGame() {
@@ -58,31 +66,37 @@ const game = (function($) {
 
 		// start new game
 		game.start(new Player('O', player1Name), new Player('X', player2Name));
+
+		// display board 
+		gameDisplay.showNewBoard();
 	}
 
 	function handleNewGame() {
-		// display start screen 
-		game.load();
+		// display start screen
+		gameDisplay.showStart();
 	}
 
 	// player mouses onto box
 	function handlePlayerHoverIn(e) {
 		const box = e.target;
+
 		// check if box is empty 
-		if (game.isEmptyBox(getIndexOfBox(box))) {
-			if (game.currentPlayer.val === 'O') {
-				$(box).css('backgroundImage', 'url(img/o.svg)');	
-			} else {
-				$(box).css('backgroundImage', 'url(img/x.svg)');
-			}
+		if (game.isEmptySpace(getIndexOfBox(box))) {
+			
+			gameDisplay.hoverInBoxStyle(box, game.currentPlayer.val);
+
 		}
 	}
 
 	// player mouse leaves box
 	function handlePlayerHoverOut(e) {
-		// set background of box 
-		if (game.isEmptyBox(getIndexOfBox(e.target))) {
-			$(e.target).css('backgroundImage', 'none');
+		const box = e.target;
+
+		// check if box is empty 
+		if (game.isEmptySpace(getIndexOfBox(box))) {
+
+			gameDisplay.hoverOutBoxStyle(box);
+
 		}
 	}
 
