@@ -3,6 +3,10 @@ function Player(value, name) {
 	this.name = name;
 }
 
-Player.prototype.move = function() {
-	return [0, 0];
+Player.prototype.takeTurn = function(game, move) {
+	// no need to make move
+	if (game.isOver()) return game;
+	
+	// make move on game board 
+	game.makeMove(move, this);
 }

@@ -14,15 +14,17 @@ Board.prototype.isEmptySpace = function(space) {
 
 Board.prototype.placePiece = function(piece, player) {
 	if (this.isEmptySpace(piece)) {
+		// set value 
 		this.board[piece] = player.val;
 
+		// increment/decrement related values 
 		this.numberOfOccupiedSpaces += 1;
 		this.numberOfEmptySpaces -= 1;
 
+		// no longer blank space 
 		const index = this.blankSpaces.indexOf(piece);
 		this.blankSpaces.splice(index, 1);
 	}
-	return this;
 }
 
 Board.prototype.contents = function(piece) {
