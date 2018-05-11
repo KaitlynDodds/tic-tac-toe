@@ -21,7 +21,7 @@ Board.prototype.placePiece = function(space, value) {
 	this.unoccupiedSpaces -= 1; 
 	// remove move option 
 	const i = this.blankSpaces.indexOf(space);
-	this.blankSpaces.splice(space, 1);
+	this.blankSpaces.splice(i, 1);
 }
 
 

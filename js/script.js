@@ -65,7 +65,11 @@ const game = (function($) {
 		const player2Name = (document.getElementById('player2NameInput').value !== "" ? document.getElementById('player2NameInput').value : "Player 2");
 
 		// start new game
-		game.start(new Player('O', player1Name), new Player('X', player2Name));
+		if (player2Name === 'Computer') {
+			game.start(new Player('O', player1Name), new ComputerPlayer('X', player2Name));			
+		} else {
+			game.start(new Player('O', player1Name), new Player('X', player2Name));
+		}
 
 		// display board 
 		gameDisplay.showNewBoard();

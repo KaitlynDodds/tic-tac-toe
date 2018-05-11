@@ -27,6 +27,11 @@ Game.prototype.nextPlayer = function() {
 	const player = this.currentPlayer;
 	this.currentPlayer = this.offPlayer;
 	this.offPlayer = player;
+
+	if (this.currentPlayer instanceof ComputerPlayer) {
+		// need to trigger next move 
+		this.currentPlayer.takeTurn(this);
+	}	
 }
 
 Game.prototype.isValidSpace = function(space) {
