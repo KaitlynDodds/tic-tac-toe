@@ -38,7 +38,16 @@ const game = (function($) {
 		if (game.board.isEmptySpace(index)) {
 
 			// record move in game state
-			game.currentPlayer.takeTurn(game, index);
+			game.makeMove(index);	
+
+			// add class to box 
+			if (game.currentPlayer.val === 'O') {
+				$(e.target).addClass('box-filled-1');
+			} else {
+				$(e.target).addClass('box-filled-2');
+			}	
+
+			game.next();
 		}
 
 		// print board
@@ -50,15 +59,8 @@ const game = (function($) {
 		const player1Name = (document.getElementById('player1NameInput').value !== "" ? document.getElementById('player1NameInput').value : "Player 1");
 		const player2Name = (document.getElementById('player2NameInput').value !== "" ? document.getElementById('player2NameInput').value : "Player 2");
 
-		if (player2Name === 'Computer') {
-			// start new game
-			game.start(new Player('O', player1Name), new PerfectPlayer('X', player2Name));
-		} else {
-			// start new game
-			game.start(new Player('O', player1Name), new Player('X', player2Name));
-		}
-
-		
+		// start new game
+		game.start(new Player('O', player1Name), new Player('X', player2Name));
 	}
 
 	function handleNewGame() {

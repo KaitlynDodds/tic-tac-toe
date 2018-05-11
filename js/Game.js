@@ -44,12 +44,7 @@ Game.prototype.next = function() {
 	this.offPlayer = player;
 
 	// update UI 
-	// this.updateActivePlayerUI();
-
-	// playing against computer?
-	// if (this.currentPlayer.name === 'Computer') {
-	// 	this.currentPlayer.takeTurn(this);
-	// }
+	this.updateActivePlayerUI();
 }
 
 Game.prototype.checkForWin = function(player) {
@@ -75,83 +70,45 @@ Game.prototype.checkForWin = function(player) {
 			gameBoard[ws[0]] === gameBoard[ws[2]]) {
 			// winning combo
 			this.winner = player;
-			return true;
 		}
 	}
-	return false;
 }
 
-Game.prototype.makeMove = function(move, player) {	
-	const newState = $.extend(true, {}, this);
+Game.prototype.isOver = function() {
+	return this.winner || this.isDraw();
+}
 
-	newState.next();
-	newState.board = $.extend(true, {}, this.board);
-	newState.board.placePiece(move, player);
+Game.prototype.isDraw = function() {
+	return this.board.numberOfEmptySpaces === 0 && !this.winner;
+}
 
-	// assign piece to board 
-	// this.board.placePiece(move, player);
+Game.prototype.makeMove = function(move) {	
+	// only allow move if space not already taken 
+	if (this.board.isEmptySpace(move)) {
+		this.board.placePiece(move, this.currentPlayer);
+		this.checkForWin(this.currentPlayer);
 
-	// switch players 
-	// this.next();
-	return newState;
+		if (this.isOver()) {
+			this.displayWin();
+		}
+	}
 }
 
 
 /* Helper Functions
 *************************/
 
-Game.prototype.isOver = function() {
-	return this.checkForWin(this.currentPlayer) || this.checkForWin(this.offPlayer) || this.isDraw();
-}
-
-Game.prototype.isDraw = function() {
-	return this.board.numberOfEmptySpaces === 0 && !this.checkForWin(this.currentPlayer);
-}
-
-Game.prototype.isUnplayed = function() {
-	return this.board.numberOfEmptySpaces === this.board.getBoard().length; 
-}
-
 Game.prototype.getAvailableMoves = function() {
-	return this.board.blankSpaces;
+	this.board.blankSpaces();
 }
 
 Game.prototype.finalMove = function() {
-	if (this.board.numberOfEmptySpaces === 1) return this.board.blankSpaces.pop();
-}
-
-Game.prototype.getNewGameState = function(move) {
-	// save state of nested objects 
-	const newBoard = $.extend(true, {}, this.board);
-	const newGameState = $.extend(true, {}, this);
-
-	// assign nested states to new game state
-	newGameState.board = newBoard;
-	// trigger move in new game state 
-	newGameState.makeMove(move, newGameState.currentPlayer);
-
-	return newGameState;
-}
-
-Game.prototype.win = function(player) {
-	return this.checkForWin(player);
+	if (this.board.numberOfEmptySpaces === 0) return this.board.blankSpaces.pop();
 }
 
 
 /* Display UI Functions
 *************************/
-
-Game.prototype.styleBox = function(space, player) {
-	// select box that corresponds to space 
-	const box = $(`.box:nth-of-type(${space + 1}`);
-
-	// add class to box 
-	if (player.val === 'O') {
-		$(box).addClass('box-filled-1');
-	} else if (player.val === 'X') {
-		$(box).addClass('box-filled-2');
-	}
-}
 
 Game.prototype.overrideBody = function(html) {
 	// override html in body, append to body 
