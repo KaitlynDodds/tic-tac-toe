@@ -1,5 +1,7 @@
 function Game() {
-	this.minMovesToWin = 5;
+	this.board = Array(9);  		// default starting board
+	this.isPlaying = false;  		// need to start game	
+	this.isTie = false;				// no tie to start
 }
 
 
@@ -7,9 +9,6 @@ function Game() {
 *************************/
 
 Game.prototype.load = function() {
-	this.board = new Board();		// default starting board
-	this.winner = null;				// no winner to start
-	// display UI
 	this.displayStart();
 }
 
@@ -26,13 +25,21 @@ Game.prototype.start = function(player1, player2) {
 	this.offPlayer = player2;
 	
 	// clear board data 
-	this.board = new Board();
+	this.board = Array(9);
+
+	// reset tie val
+	this.isTie = false;
 
 	// display board 
 	this.displayBoard();
+
+	// start new game 
+	this.isPlaying = true;
 }
 
 Game.prototype.stop = function() {
+	// stop game 
+	this.isPlaying = false;	
 	// display final screen 
 	this.displayWin();
 }
@@ -47,9 +54,33 @@ Game.prototype.next = function() {
 	this.updateActivePlayerUI();
 }
 
-Game.prototype.checkForWin = function(player) {
-	// no need to check if no chance of winner yet 
-	if (this.board.numberOfOccupiedSpaces < this.minMovesToWin) return; 
+Game.prototype.move = function(move) {
+	if (this.isPlaying) {
+		// check that move is valid 
+		if (this.isEmptyBox(move)) {
+			// add move to board 
+			this.board[move] = this.currentPlayer.val;
+			// check for winner
+			if (this.checkIsWinner() || this.checkIsTie()) {
+				// game over 
+				this.stop();
+			} else {
+				// update currentPlayer 
+				this.next();
+			}
+		}
+	}
+}
+
+
+/* Helper Functions
+*************************/
+
+Game.prototype.isEmptyBox = function(index) {
+	return this.board[index] === undefined;
+}
+
+Game.prototype.checkIsWinner = function() {
 	// check board for winner
 	const winningScenarios = [
 		[0, 1, 2],
@@ -61,54 +92,43 @@ Game.prototype.checkForWin = function(player) {
 		[1, 4, 7],
 		[2, 5, 8]
 	];
-	const gameBoard = this.board.getBoard();
 	for (let i = 0; i < winningScenarios.length; i++) {
 		const ws = winningScenarios[i];
-		if (gameBoard[ws[0]] !== undefined &&
-			gameBoard[ws[0]] === player.val &&
-			gameBoard[ws[0]] === gameBoard[ws[1]] &&
-			gameBoard[ws[0]] === gameBoard[ws[2]]) {
+		if (this.board[ws[0]] !== undefined &&
+			this.board[ws[0]] === this.board[ws[1]] &&
+			this.board[ws[0]] === this.board[ws[2]]) {
 			// winning combo
-			this.winner = player;
+			return true;
 		}
 	}
+	// no winner yet 
+	return false;
 }
 
-Game.prototype.isOver = function() {
-	return this.winner || this.isDraw();
-}
-
-Game.prototype.isDraw = function() {
-	return this.board.numberOfEmptySpaces === 0 && !this.winner;
-}
-
-Game.prototype.makeMove = function(move) {	
-	// only allow move if space not already taken 
-	if (this.board.isEmptySpace(move)) {
-		this.board.placePiece(move, this.currentPlayer);
-		this.checkForWin(this.currentPlayer);
-
-		if (this.isOver()) {
-			this.displayWin();
-		}
+Game.prototype.checkIsTie = function() {
+	// check if board is full
+	for (let i = 0; i < this.board.length; i++) {
+		if (!this.board[i]) return false;
 	}
-}
-
-
-/* Helper Functions
-*************************/
-
-Game.prototype.getAvailableMoves = function() {
-	this.board.blankSpaces();
-}
-
-Game.prototype.finalMove = function() {
-	if (this.board.numberOfEmptySpaces === 0) return this.board.blankSpaces.pop();
+	// game is over, tie
+	this.isTie = true;
+	return true;
 }
 
 
 /* Display UI Functions
 *************************/
+
+Game.prototype.printBoard = function() {
+	let print = "";
+	for (let i = 0; i < this.board.length; i++) {
+		print += (this.board[i] ? `[${this.board[i]}]` : `[-]`);
+		if (i === 2 || i === 5 || i === 8) {
+			print += '\n';
+		}
+	}
+	console.log(print);	
+}
 
 Game.prototype.overrideBody = function(html) {
 	// override html in body, append to body 
@@ -193,10 +213,10 @@ Game.prototype.displayBoard = function() {
 Game.prototype.displayWin = function() {
 
 	const winnerHTML = 
-	`<div class="screen screen-win ${(this.isDraw() ? 'screen-win-tie' : (this.currentPlayer === this.player1 ? 'screen-win-one' : 'screen-win-two'))}" id="finish">
+	`<div class="screen screen-win ${(this.isTie ? 'screen-win-tie' : (this.currentPlayer === this.player1 ? 'screen-win-one' : 'screen-win-two'))}" id="finish">
 	  <header>
 	    <h1>Tic Tac Toe</h1>
-	    <p class="message">${(this.isDraw() ? 'It\'s a Tie!' : this.currentPlayer.name + ' Wins!')}</p>
+	    <p class="message">${(this.isTie ? 'It\'s a Tie!' : this.currentPlayer.name + ' Wins!')}</p>
 	    <a href="#" class="button">New game</a>
 	  </header>
 	</div>`;
