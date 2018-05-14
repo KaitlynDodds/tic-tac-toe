@@ -6,8 +6,10 @@ const game = (function($) {
 	const game = new Game();
 	const gameDisplay = new GameDisplay(game);
 
+	game.setGameDisplay(gameDisplay);
+
 	// load screen 
-	gameDisplay.showStart();
+	game.gameDisplay.showStart();
 
 
 	/* Event Handlers
@@ -40,23 +42,23 @@ const game = (function($) {
 		if (game.isValidSpace(index)) {
 
 			// apply styling to UI 
-			gameDisplay.styleBox(e.target, game.currentPlayer.val);
+			game.gameDisplay.styleBox(e.target, game.currentPlayer.val);
 
 			// apply move to game state 
 			game.makeMove(index);
 
 			if (game.isOver()) {
 				// display winner
-				gameDisplay.showWinOrDraw();
+				game.gameDisplay.showWinOrDraw();
 			} else {
 				// show next player 
-				gameDisplay.updateActivePlayerUI();
+				game.gameDisplay.updateActivePlayerUI();
 			}
 	
 		}
 
 		// TODO: kzd -> remove when done 
-		gameDisplay.printBoard();
+		game.gameDisplay.printBoard();
 	}
 
 	function handleStartGame() {
@@ -72,12 +74,12 @@ const game = (function($) {
 		}
 
 		// display board 
-		gameDisplay.showNewBoard();
+		game.gameDisplay.showNewBoard();
 	}
 
 	function handleNewGame() {
 		// display start screen
-		gameDisplay.showStart();
+		game.gameDisplay.showStart();
 	}
 
 	// player mouses onto box
@@ -87,7 +89,7 @@ const game = (function($) {
 		// check if box is empty 
 		if (game.isEmptySpace(getIndexOfBox(box))) {
 			
-			gameDisplay.hoverInBoxStyle(box, game.currentPlayer.val);
+			game.gameDisplay.hoverInBoxStyle(box, game.currentPlayer.val);
 
 		}
 	}
@@ -99,7 +101,7 @@ const game = (function($) {
 		// check if box is empty 
 		if (game.isEmptySpace(getIndexOfBox(box))) {
 
-			gameDisplay.hoverOutBoxStyle(box);
+			game.gameDisplay.hoverOutBoxStyle(box);
 
 		}
 	}

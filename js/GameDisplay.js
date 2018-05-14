@@ -21,6 +21,11 @@ GameDisplay.prototype.showNewBoard = function() {
 	this.displayBoard();
 }
 
+GameDisplay.prototype.getBox = function(index) {
+	// get box based on value
+	return $(`.boxes .box:nth-child(${index + 1})`);
+}
+
 GameDisplay.prototype.styleBox = function(box, value) {
 	if (value === 'O') {
 		$(box).addClass('box-filled-1');
@@ -31,14 +36,14 @@ GameDisplay.prototype.styleBox = function(box, value) {
 
 GameDisplay.prototype.hoverInBoxStyle = function(box, value) {
 	if (value === 'O') {
-		$(box).css('backgroundImage', 'url(img/o.svg)');	
+		$(box).addClass('oImage');
 	} else {
-		$(box).css('backgroundImage', 'url(img/x.svg)');
+		$(box).addClass('xImage');
 	}
 }
 
 GameDisplay.prototype.hoverOutBoxStyle = function(box) {
-	$(box).css('backgroundImage', 'none');
+	$(box).removeClass('oImage xImage');
 }
 
 /* Display UI Functions

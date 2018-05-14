@@ -1,5 +1,5 @@
 
-function Game() { 
+function Game(gameDisplay) { 
 	this.winner = null;
 
 	// all possible winning scenarios 
@@ -57,6 +57,7 @@ Game.prototype.isValidSpace = function(space) {
 }
 
 Game.prototype.makeMove = function(move) {
+	// add to game state
 	this.gameBoard.placePiece(move, this.currentPlayer.val);
 
 	this.checkForWinner();
@@ -103,6 +104,10 @@ Game.prototype.checkForWinner = function() {
 			break;
 		}
 	}
+}
+
+Game.prototype.setGameDisplay = function(gameDisplay) {
+	this.gameDisplay = gameDisplay;
 }
 
 
