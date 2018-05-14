@@ -9,7 +9,7 @@ const game = (function($) {
 	game.setGameDisplay(gameDisplay);
 
 	// load screen 
-	game.gameDisplay.showStart();
+	game.load();
 
 
 	/* Event Handlers
@@ -31,6 +31,7 @@ const game = (function($) {
 
 	$('body').on('click', '#togglePlayer2Btn', handleTogglePlayer2Btn);
 
+
 	/* Handler Functions
 	*************************/
 
@@ -40,25 +41,9 @@ const game = (function($) {
 
 		// make sure space has not already been selected 
 		if (game.isValidSpace(index)) {
-
-			// apply styling to UI 
-			game.gameDisplay.styleBox(e.target, game.currentPlayer.val);
-
 			// apply move to game state 
-			game.makeMove(index);
-
-			if (game.isOver()) {
-				// display winner
-				game.gameDisplay.showWinOrDraw();
-			} else {
-				// show next player 
-				game.gameDisplay.updateActivePlayerUI();
-			}
-	
+			game.makeMove(index, e.target);
 		}
-
-		// TODO: kzd -> remove when done 
-		game.gameDisplay.printBoard();
 	}
 
 	function handleStartGame() {

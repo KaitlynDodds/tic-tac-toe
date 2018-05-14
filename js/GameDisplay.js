@@ -2,24 +2,8 @@ function GameDisplay(gameState) {
 	this.gameState = gameState;
 }
 
-
-/* Display UI Functions
+/* Helper Functions
 *************************/
-
-GameDisplay.prototype.showStart = function() {
-	// load start screen 
-	this.displayStart();
-}
-
-GameDisplay.prototype.showWinOrDraw = function() {
-	// game over, show who won (if anyone won)
-	this.displayWin();
-}
-
-GameDisplay.prototype.showNewBoard = function() {
-	// display empty board 
-	this.displayBoard();
-}
 
 GameDisplay.prototype.getBox = function(index) {
 	// get box based on value
@@ -100,7 +84,7 @@ GameDisplay.prototype.updateActivePlayerUI = function() {
 	$('.players').parent().html(this.activePlayerUI());
 }
 
-GameDisplay.prototype.displayStart = function() {
+GameDisplay.prototype.showStart = function() {
 	const startHTML = 
 	`<div class="screen screen-start" id="start">
 	  <header>
@@ -113,7 +97,7 @@ GameDisplay.prototype.displayStart = function() {
 	this.overrideBody(startHTML);
 }
 
-GameDisplay.prototype.displayBoard = function() {
+GameDisplay.prototype.showNewBoard = function() {
 
 	// insert board html into page 
 	const boardHTML = 
@@ -140,7 +124,7 @@ GameDisplay.prototype.displayBoard = function() {
 	this.overrideBody(boardHTML);
 }
 
-GameDisplay.prototype.displayWin = function() {
+GameDisplay.prototype.showWinOrDraw = function() {
 
 	const winnerHTML = 
 	`<div class="screen screen-win ${(this.gameState.isDraw() ? 'screen-win-tie' : (this.gameState.currentPlayer === this.gameState.player1 ? 'screen-win-one' : 'screen-win-two'))}" id="finish">

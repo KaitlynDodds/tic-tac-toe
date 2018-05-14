@@ -18,6 +18,10 @@ function Game(gameDisplay) {
 /* Game Actions
 *************************/
 
+Game.prototype.load = function() {
+	this.gameDisplay.showStart();
+}
+
 Game.prototype.start = function(player1, player2) {
 	// player 1 is always 'O'
 	if (player1.val === 'O') {
@@ -34,38 +38,48 @@ Game.prototype.start = function(player1, player2) {
 	this.winner = null;
 }
 
-Game.prototype.nextPlayer = function() {
+Game.prototype.makeMove = function(move, box) {
+	// add to game state
+	this.gameBoard.placePiece(move, this.currentPlayer.val);
+	// update UI 
+	this.gameDisplay.styleBox(box, this.currentPlayer.val);
+
+	// check if winning move was played 
+	this.checkForWinner();
+	// handle next actions 
+	this.moveOn();
+}
+
+Game.prototype.moveOn = function() {
+	if (this.isOver()) {
+		this.gameDisplay.showWinOrDraw();
+	} else {
+		// switch currentPlayer, update UI 
+		this.toggleActivePlayer();
+
+		// if playing against computer, trigger computer player to take turn 
+		if (this.currentPlayer instanceof ComputerPlayer) {
+			this.triggerComputerPlayer();
+		}	
+	}
+}
+
+Game.prototype.triggerComputerPlayer = function() {
+	// slight delay before taking turn 
+	window.setTimeout((function() {
+		this.currentPlayer.takeTurn(this);
+	}).bind(this), 900);
+}
+
+Game.prototype.toggleActivePlayer = function() {
 	// set new current player 
 	const player = this.currentPlayer;
 	this.currentPlayer = this.offPlayer;
 	this.offPlayer = player;
 
-	if (this.currentPlayer instanceof ComputerPlayer) {
-		// need to trigger next move 
-		this.currentPlayer.takeTurn(this);
-	}	
-}
+	// show next player 
+	this.gameDisplay.updateActivePlayerUI();	
 
-Game.prototype.isValidSpace = function(space) {
-	// check if space is empty 
-	if (!this.isEmptySpace(space)) return false; 
-
-	// check if game is over 
-	if (this.isOver()) return false; 
-
-	return true;
-}
-
-Game.prototype.makeMove = function(move) {
-	// add to game state
-	this.gameBoard.placePiece(move, this.currentPlayer.val);
-
-	this.checkForWinner();
-
-	// no winner, move to next player 
-	if (!this.winner) {
-		this.nextPlayer();
-	}
 }
 
 
@@ -88,7 +102,20 @@ Game.prototype.isEmptySpace = function(space) {
 	return this.getGameBoard()[space] === undefined;
 }
 
+Game.prototype.isValidSpace = function(space) {
+	// check if space is empty 
+	if (!this.isEmptySpace(space)) return false; 
+
+	// check if game is over 
+	if (this.isOver()) return false; 
+
+	return true;
+}
+
 Game.prototype.checkForWinner = function() {
+	// is it worth checking?
+	if (this.gameBoard.occupiedSpaces < 5) return;
+
 	const board = this.getGameBoard();
 	
 	for (let i = 0; i < this.winningScenarios.length; i++) {

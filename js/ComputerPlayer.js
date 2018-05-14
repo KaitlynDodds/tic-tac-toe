@@ -6,18 +6,17 @@ function ComputerPlayer(value, name) {
 ComputerPlayer.prototype = Object.create(Player.prototype);
 
 ComputerPlayer.prototype.takeTurn = function(gameState) {
-	// copy objects
+	// record state
 	this.activeGameState = gameState; 
 
 	// select best move option
 	const move = this.selectSomewhatIntelligentMove();
 
-	// style box 
+	// get relevant ui box 
 	const box = this.activeGameState.gameDisplay.getBox(move);
-	this.activeGameState.gameDisplay.styleBox(box, this.val);
 
 	// trigger move on active game state 
-	this.activeGameState.makeMove(move);
+	this.activeGameState.makeMove(move, box);
 }
 
 ComputerPlayer.prototype.getRandomNumber = function(max) {
@@ -33,7 +32,11 @@ ComputerPlayer.prototype.selectSomewhatIntelligentMove = function() {
 	let move = -1;
 
 	// if other player is about to win, select space to prevent win 
-	move = this.selectWinningMove(); 
+	move = this.selectWinningMove(this.val); 
+
+	if (move < 0) {
+		move = this.selectWinningMove(this.activeGameState.offPlayer.val); 		
+	}
 
 	// otherwise select corner if possible
 	if (move < 0) {
@@ -59,8 +62,13 @@ ComputerPlayer.prototype.selectCorner = function() {
 	return -1; 
 }
 
+// check if a = b, and c has no value 
+ComputerPlayer.prototype.isValidWinningScenario = function(a, b, c, value) {
+	return ((a !== undefined && a === value) && (a === b) && (c === undefined));
+}
+
 // if any two values match, return the third 
-ComputerPlayer.prototype.selectWinningMove = function() {
+ComputerPlayer.prototype.selectWinningMove = function(value) {
 	const board = this.activeGameState.getGameBoard();
 	// loop over all winning scenarios 
 	for (let i = 0; i < this.activeGameState.winningScenarios.length; i++) {
@@ -68,23 +76,17 @@ ComputerPlayer.prototype.selectWinningMove = function() {
 		const ws = this.activeGameState.winningScenarios[i];
 
 		// if first and second value match, return third if space not already occupied  
-		if ((board[ws[0]] !== undefined && board[ws[0]] === board[ws[1]]) 
-			&& (board[ws[2]] === undefined)) 
-		{
+		if (this.isValidWinningScenario(board[ws[0]], board[ws[1]], board[ws[2]], value)) {
 			return ws[2];
 		}
 
 		// if first and last value match, return second if space not already occupied 
-		if ((board[ws[0]] !== undefined && board[ws[0]] === board[ws[2]]) 
-			&& (board[ws[1]] === undefined)) 
-		{
+		if (this.isValidWinningScenario(board[ws[0]], board[ws[2]], board[ws[1]], value)) {
 			return ws[1];
 		}
 
 		// if second and third value match, return first if space not already occupied 
-		if ((board[ws[1]] !== undefined && board[ws[1]] === board[ws[2]]) 
-			&& (board[ws[0]] === undefined)) 
-		{
+		if (this.isValidWinningScenario(board[ws[1]], board[ws[2]], board[ws[0]], value)) {
 			return ws[0];
 		}
 	}
