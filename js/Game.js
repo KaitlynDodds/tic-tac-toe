@@ -41,11 +41,13 @@ Game.prototype.start = function(player1, player2) {
 Game.prototype.makeMove = function(move, box) {
 	// add to game state
 	this.gameBoard.placePiece(move, this.currentPlayer.val);
+	
 	// update UI 
 	this.gameDisplay.styleBox(box, this.currentPlayer.val);
 
 	// check if winning move was played 
 	this.checkForWinner();
+
 	// handle next actions 
 	this.moveOn();
 }
@@ -64,6 +66,7 @@ Game.prototype.moveOn = function() {
 	}
 }
 
+// need to trigger computer player to make a move
 Game.prototype.triggerComputerPlayer = function() {
 	// slight delay before taking turn 
 	window.setTimeout((function() {
@@ -77,9 +80,8 @@ Game.prototype.toggleActivePlayer = function() {
 	this.currentPlayer = this.offPlayer;
 	this.offPlayer = player;
 
-	// show next player 
+	// update UI
 	this.gameDisplay.updateActivePlayerUI();	
-
 }
 
 
@@ -102,6 +104,7 @@ Game.prototype.isEmptySpace = function(space) {
 	return this.getGameBoard()[space] === undefined;
 }
 
+// checks if space is empty or if game is already over 
 Game.prototype.isValidSpace = function(space) {
 	// check if space is empty 
 	if (!this.isEmptySpace(space)) return false; 
@@ -112,6 +115,7 @@ Game.prototype.isValidSpace = function(space) {
 	return true;
 }
 
+// checks to see if a winning move has been played 
 Game.prototype.checkForWinner = function() {
 	// is it worth checking?
 	if (this.gameBoard.occupiedSpaces < 5) return;
@@ -126,7 +130,7 @@ Game.prototype.checkForWinner = function() {
 			board[ws[0]] === board[ws[1]] &&
 			board[ws[0]] === board[ws[2]]) 
 		{
-			// winning combo
+			// winning combo, set game winner
 			this.winner = this.currentPlayer;
 			break;
 		}

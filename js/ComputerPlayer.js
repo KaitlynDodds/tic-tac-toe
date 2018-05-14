@@ -67,11 +67,13 @@ ComputerPlayer.prototype.isValidWinningScenario = function(a, b, c, value) {
 	return ((a !== undefined && a === value) && (a === b) && (c === undefined));
 }
 
-// if any two values match, return the third 
+// if any two space values match, return the move that would result in a winning move  
 ComputerPlayer.prototype.selectWinningMove = function(value) {
 	const board = this.activeGameState.getGameBoard();
+
 	// loop over all winning scenarios 
 	for (let i = 0; i < this.activeGameState.winningScenarios.length; i++) {
+		
 		// get winning scenario to compare to 
 		const ws = this.activeGameState.winningScenarios[i];
 

@@ -48,8 +48,8 @@ const game = (function($) {
 
 	function handleStartGame() {
 		// get player names 
-		const player1Name = (document.getElementById('player1NameInput').value !== "" ? document.getElementById('player1NameInput').value : "Player 1");
-		const player2Name = (document.getElementById('player2NameInput').value !== "" ? document.getElementById('player2NameInput').value : "Player 2");
+		const player1Name = ($('#player1NameInput').val() !== "" ? $('#player1NameInput').val() : "Player 1");
+		const player2Name = ($('#player2NameInput').val() !== "" ? $('#player2NameInput').val() : "Player 2");
 
 		// start new game
 		if (player2Name === 'Computer') {
@@ -108,18 +108,18 @@ const game = (function($) {
 	function handleTogglePlayer2Btn(e) {
 		// toggle visiblity of player 2 name input 
 		// change btn text 
-		const btn = e.target;
-		const input = btn.previousElementSibling;
+		const btn = $(e.target);
+		const input = $(btn).prev();
 		// if already set to play against computer
-		if (input.disabled) {
-			btn.textContent = "Play Against the Computer";
-			input.value = "";
-			input.placeholder = "Name...";
-			input.disabled = false;
+		if (input.attr('disabled')) {
+			$(btn).text("Play Against the Computer");
+			$(input).val("");
+			$(input).attr('placeholder', "Name...");
+			$(input).attr('disabled', false);
 		} else {
-			btn.textContent = "Play Against a Friend";
-			input.value = "Computer";
-			input.disabled = true;
+			btn.text("Play Against a Friend");
+			input.val("Computer");
+			$(input).attr('disabled', true);
 		}
 	}
 
