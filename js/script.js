@@ -39,8 +39,8 @@ const game = (function($) {
 
 		const index = getIndexOfBox(e.target);
 
-		// make sure space has not already been selected 
-		if (game.isValidSpace(index)) {
+		// don't allow click if current player is computer, make sure space has not already been selected 
+		if (!game.isCurrentPlayerComputerPlayer() && game.isValidSpace(index)) {
 			// apply move to game state 
 			game.makeMove(index, e.target);
 		}

@@ -41,7 +41,7 @@ Game.prototype.start = function(player1, player2) {
 Game.prototype.makeMove = function(move, box) {
 	// add to game state
 	this.gameBoard.placePiece(move, this.currentPlayer.val);
-	
+
 	// update UI 
 	this.gameDisplay.styleBox(box, this.currentPlayer.val);
 
@@ -60,7 +60,7 @@ Game.prototype.moveOn = function() {
 		this.toggleActivePlayer();
 
 		// if playing against computer, trigger computer player to take turn 
-		if (this.currentPlayer instanceof ComputerPlayer) {
+		if (this.isCurrentPlayerComputerPlayer()) {
 			this.triggerComputerPlayer();
 		}	
 	}
@@ -98,6 +98,10 @@ Game.prototype.isDraw = function() {
 
 Game.prototype.isOver = function() {
 	return this.winner || this.isDraw();
+}
+
+Game.prototype.isCurrentPlayerComputerPlayer = function() {
+	return this.currentPlayer instanceof ComputerPlayer;
 }
 
 Game.prototype.isEmptySpace = function(space) {
