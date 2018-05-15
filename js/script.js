@@ -40,6 +40,7 @@ const game = (function($) {
 		const index = getIndexOfBox(e.target);
 
 		// don't allow click if current player is computer, make sure space has not already been selected 
+		console.log(!game.isCurrentPlayerComputerPlayer() && game.isValidSpace(index));
 		if (!game.isCurrentPlayerComputerPlayer() && game.isValidSpace(index)) {
 			// apply move to game state 
 			game.makeMove(index, e.target);
@@ -72,7 +73,7 @@ const game = (function($) {
 		const box = e.target;
 
 		// check if box is empty 
-		if (game.isEmptySpace(getIndexOfBox(box))) {
+		if (!game.isCurrentPlayerComputerPlayer() && game.isEmptySpace(getIndexOfBox(box))) {
 			
 			game.gameDisplay.hoverInBoxStyle(box, game.currentPlayer.val);
 
@@ -83,12 +84,7 @@ const game = (function($) {
 	function handlePlayerHoverOut(e) {
 		const box = e.target;
 
-		// check if box is empty 
-		if (game.isEmptySpace(getIndexOfBox(box))) {
-
-			game.gameDisplay.hoverOutBoxStyle(box);
-
-		}
+		game.gameDisplay.hoverOutBoxStyle(box);
 	}
 
 	function getIndexOfBox(box) {
