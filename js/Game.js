@@ -71,9 +71,7 @@ Game.prototype.triggerComputerPlayer = function() {
 	// slight delay before taking turn 
 	window.setTimeout((function() {
 		this.currentPlayer.takeTurn(this);
-		console.log('back');
 	}).bind(this), 900);
-	console.log(this.currentPlayer.val);
 }
 
 Game.prototype.toggleActivePlayer = function() {
