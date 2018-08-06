@@ -63,5 +63,5 @@ your programming.**
 
 **Display the player’s name if they win the game**  
 
-**Date Completed:** N/A  
-**Grade:** N/A
+**Date Completed:** 05/15/2018   
+**Grade:** Exceeds Expectations
